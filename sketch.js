@@ -11,8 +11,7 @@ var bird, slingShot;
 var BG = "sprites/bg2.jpg";
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
-    getBG();
+   getBG();
 }
 
 function setup(){
@@ -45,7 +44,9 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+    if (backgroundImg) {    
+        background(backgroundImg);
+    }
     Engine.update(engine);
     //strokeWeight(4);
     box1.display();
@@ -76,9 +77,18 @@ function mouseDragged(){
 
 
 async function getBG(){
- var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Tokyo");
+ var response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
  var respJSON = await response.json();
  console.log(respJSON);
+ var datetimee = respJSON.datetime;
+ var hour = datetimee.slice(11, 13);
+ if (hour > 15) {
+     BG = "sprites/bg2.jpg";
+ }
+ else {
+     BG = "sprites/bg.png";
+ }
+ backgroundImg = loadImage(BG);
 }
 
 function mouseReleased(){
